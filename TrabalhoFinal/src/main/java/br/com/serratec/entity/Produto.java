@@ -1,33 +1,42 @@
 package br.com.serratec.entity;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "tb_produto")
 public class Produto {
 
 	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY)
-	private Long id;
+	@GeneratedValue (strategy = GenerationType.UUID)
+	private UUID id;
 	
 	private String nome;
 	private Double valor;
 	
-	@OneToMany(mappedBy = "id.produto", fetch = FetchType.EAGER)
-	private Set<CategoriaProduto> CategoriaProdutos = new HashSet<>();
+	@ManyToOne 
+	@JoinColumn(name = "id_categoria")
+	@JsonBackReference
+	private Categoria categoria;
+	
+	public Produto() {
+		
+	}
 
-	public Long getId() {
+	public UUID getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(UUID id) {
 		this.id = id;
 	}
 
@@ -47,10 +56,10 @@ public class Produto {
 		this.valor = valor;
 	}
 
-	public Set<CategoriaProduto> getCategoriaProdutos() {
-		return CategoriaProdutos;
+	public Categoria getCategoria() {
+		return categoria;
 	}
 
-		
+
 	
 }
