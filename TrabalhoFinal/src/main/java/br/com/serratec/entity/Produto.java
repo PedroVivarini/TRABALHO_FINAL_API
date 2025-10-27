@@ -5,6 +5,7 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,7 +24,7 @@ public class Produto {
 	private String nome;
 	private Double valor;
 	
-	@ManyToOne 
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_categoria")
 	@JsonBackReference
 	private Categoria categoria;
@@ -59,6 +60,12 @@ public class Produto {
 	public Categoria getCategoria() {
 		return categoria;
 	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+
+
 
 
 	
