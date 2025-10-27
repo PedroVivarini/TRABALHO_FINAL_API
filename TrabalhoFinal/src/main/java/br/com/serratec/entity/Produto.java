@@ -60,6 +60,12 @@ public class Produto {
 		return categoria;
 	}
 
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+
+	
+
 
 	
 }
