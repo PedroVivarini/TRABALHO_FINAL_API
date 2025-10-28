@@ -3,6 +3,7 @@ package br.com.serratec.service;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class ProdutoService {
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 
-	public ProdutoResponseDTO inserir(ProdutoRequestDTO dto) {
+	public ProdutoResponseDTO inserirProduto(ProdutoRequestDTO dto) {
 		Optional<Categoria> categoriaOptional = categoriaRepository.findById(dto.getIdCategoria());
 		if (categoriaOptional.isPresent()) {
 			Categoria categoria = categoriaOptional.get();
@@ -54,5 +55,21 @@ public class ProdutoService {
 			}
 		}
 		return produtoDTO;
+	}
+
+	public ProdutoResponseDTO atualizar(UUID id, ProdutoRequestDTO dto) {
+		Optional<Produto> produtoOptional = produtoRepository.findById(id);
+
+		if (produtoOptional.isEmpty()) {
+			throw new RuntimeException("Produto não encontrado");
+		}
+
+		Produto produto = produtoOptional.get();
+		produto.setNome(dto.getNome());
+		produto.setValor(dto.getValor());
+		produto.setId(id);
+
+		Produto produtoDTO = produtoRepository.save(produto);
+		return new ProdutoResponseDTO(produtoDTO);
 	}
 }

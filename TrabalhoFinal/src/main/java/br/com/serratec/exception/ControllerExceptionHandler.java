@@ -64,7 +64,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 		List<String> erros = new ArrayList<>();
 		erros.add(ex.getMessage());
 		ErroResposta erroResposta = new ErroResposta(HttpStatus.NOT_FOUND.value(),
-				"Existem campos inválidos", LocalDateTime.now(), erros);
+				"Cep não encontrado", LocalDateTime.now(), erros);
 
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erroResposta);
 		

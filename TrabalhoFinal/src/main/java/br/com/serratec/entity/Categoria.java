@@ -25,6 +25,7 @@ public class Categoria {
 	
 	private String nome;
 	
+	
 	@OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonManagedReference
 	private Set<Produto> Produtos = new HashSet<>();

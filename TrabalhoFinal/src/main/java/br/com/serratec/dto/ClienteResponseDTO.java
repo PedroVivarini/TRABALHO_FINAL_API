@@ -10,6 +10,7 @@ public class ClienteResponseDTO {
     private String email;   
     private String cpf;    
     private String telefone; 
+
     public ClienteResponseDTO() {
     }
 

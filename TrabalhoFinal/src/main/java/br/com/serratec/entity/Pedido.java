@@ -1,79 +1,65 @@
 package br.com.serratec.entity;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import java.time.LocalDate;
 import java.util.UUID;
 
-import br.com.serratec.enums.StatusPedido;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_pedido")
 public class Pedido {
-
-    @Id
+	
+	@Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-
-    @ManyToOne
+	private UUID id;
+	
+	private LocalDate dataPedido;
+	
+	@ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
-    private Cliente cliente;
+	private Cliente cliente;
+	
+	public Pedido() {
+		// TODO Auto-generated constructor stub
+	}
 
-    @Enumerated(EnumType.STRING)
-    private StatusPedido status;
+	public Pedido(UUID id, LocalDate dataPedido, Cliente cliente) {
+		super();
+		this.id = id;
+		this.dataPedido = dataPedido;
+		this.cliente = cliente;
+	}
 
-    private LocalDateTime dataPedido;
+	
+	public UUID getId() {
+		return id;
+	}
 
-    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ProdutoPedido> itens;
+	public void setId(UUID id) {
+		this.id = id;
+	}
 
-    public UUID getId() {
-        return id;
-    }
+	
+	public LocalDate getDataPedido() {
+		return dataPedido;
+	}
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
+	public void setDataPedido(LocalDate dataPedido) {
+		this.dataPedido = dataPedido;
+	}
 
-    public Cliente getCliente() {
-        return cliente;
-    }
+	
+	public Cliente getCliente() {
+		return cliente;
+	}
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    public StatusPedido getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusPedido status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getDataPedido() {
-        return dataPedido;
-    }
-
-    public void setDataPedido(LocalDateTime dataPedido) {
-        this.dataPedido = dataPedido;
-    }
-
-    public List<ProdutoPedido> getItens() {
-        return itens;
-    }
-
-    public void setItens(List<ProdutoPedido> itens) {
-        this.itens = itens;
-    }
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
 }

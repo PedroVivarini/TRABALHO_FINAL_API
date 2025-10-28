@@ -35,15 +35,15 @@ public class Cliente {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Cliente(UUID id, String nome, String email, String cpf, String telefone, String endereco,String cep) {
+	public Cliente(UUID id, String nome, String email, String cpf, String telefone, String cep, String endereco) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.cpf = cpf;
 		this.telefone = telefone;
-		this.endereco = endereco;
 		this.cep = cep;
+		this.endereco = endereco;
 	}
 
 	public UUID getId() {
@@ -57,6 +57,25 @@ public class Cliente {
 	
 	public String getNome() {
 		return nome;
+	}
+	
+	
+	
+
+	public String getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
+	}
+
+	public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
 	}
 
 	public void setNome(String nome) {
@@ -97,21 +116,5 @@ public class Cliente {
 
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
-	}
-
-	public String getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(String endereco) {
-		this.endereco = endereco;
-	}
-
-	public String getCep() {
-		return cep;
-	}
-
-	public void setCep(String cep) {
-		this.cep = cep;
 	}
 }
