@@ -1,6 +1,6 @@
 package br.com.serratec.service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -8,7 +8,6 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.serratec.dto.Endereco;
 import br.com.serratec.dto.PedidoRequestDTO;
 import br.com.serratec.dto.PedidoResponseDTO;
 import br.com.serratec.entity.Cliente;
@@ -41,7 +40,7 @@ public class PedidoService {
 
         Pedido pedido = new Pedido();
         pedido.setCliente(cliente);
-        pedido.setDataPedido(LocalDateTime.now());
+        pedido.setDataPedido(LocalDate.now());
         pedido.setStatus(StatusPedido.PENDENTE); 
 
         List<ProdutoPedido> itens = new ArrayList<>();
