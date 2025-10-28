@@ -23,8 +23,5 @@ public record ClienteRequestDTO(
     @Size(max = 14)
     String telefone) 
 {
-
-    @Size(min = 2, max = 100, message = "O nome deve ter entre 2 e 100 caracteres.")
-    String nome) {
 	
 }
