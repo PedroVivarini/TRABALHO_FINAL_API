@@ -55,8 +55,4 @@ public class ProdutoRequestDTO {
 	public void setIdCategoria(UUID idCategoria) {
 		this.idCategoria = idCategoria;
 	}
-	
-	
-	
-	
 }

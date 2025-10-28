@@ -59,7 +59,6 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 	
 		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(erroResposta);
 	}
-	
 	@ExceptionHandler(HttpClientErrorException.class)
 	protected ResponseEntity<Object>handleHttpClientErrorException(HttpClientErrorException ex){
 		List<String> erros = new ArrayList<>();
@@ -70,8 +69,4 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erroResposta);
 		
 	}
-	
-	
-	
-	
 }
