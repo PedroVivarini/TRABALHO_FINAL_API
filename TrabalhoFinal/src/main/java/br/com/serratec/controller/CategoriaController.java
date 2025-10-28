@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.serratec.dto.CategoriaRequestDTO;
 import br.com.serratec.dto.CategoriaResponseDTO;
 import br.com.serratec.service.CategoriaService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(name = "Categoria", description = "Cadastro de Categorias")
 @RestController
 @RequestMapping("/categorias")
 public class CategoriaController {

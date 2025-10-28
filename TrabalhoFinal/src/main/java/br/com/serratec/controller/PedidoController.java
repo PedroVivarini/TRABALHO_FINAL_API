@@ -18,8 +18,10 @@ import br.com.serratec.dto.PedidoRequestDTO;
 import br.com.serratec.dto.PedidoResponseDTO;
 import br.com.serratec.enums.StatusPedido;
 import br.com.serratec.service.PedidoService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(name = "Pedido", description = "Registro e edição de Pedidos")
 @RestController
 @RequestMapping("/pedidos")
 public class PedidoController {

@@ -10,8 +10,10 @@ import java.util.UUID;
 import br.com.serratec.dto.ClienteRequestDTO;
 import br.com.serratec.dto.ClienteResponseDTO;
 import br.com.serratec.service.ClienteService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+@Tag(name = "Cliente", description = "Cadastro de Clientes")
 @RestController
 @RequestMapping("/clientes") 
 public class ClienteController {
