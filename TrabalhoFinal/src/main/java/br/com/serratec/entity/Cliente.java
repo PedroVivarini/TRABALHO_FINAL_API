@@ -16,9 +16,9 @@ import jakarta.persistence.Table;
 public class Cliente {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
-	
+
 	private String nome;
 	
 	private String email;
@@ -30,12 +30,10 @@ public class Cliente {
 	private String endereco;
 	
 	private String cep;
-	
-	
+
 	@OneToMany(mappedBy = "cliente")
-    private List<Pedido> pedidos = new ArrayList<>();
-	
-	
+	private List<Pedido> pedidos = new ArrayList<>();
+
 	public Cliente() {
 		// TODO Auto-generated constructor stub
 	}
@@ -59,13 +57,9 @@ public class Cliente {
 		this.id = id;
 	}
 
-	
 	public String getNome() {
 		return nome;
 	}
-	
-	
-	
 
 	public String getEndereco() {
 		return endereco;
@@ -87,7 +81,6 @@ public class Cliente {
 		this.nome = nome;
 	}
 
-	
 	public String getEmail() {
 		return email;
 	}
@@ -96,7 +89,6 @@ public class Cliente {
 		this.email = email;
 	}
 
-	
 	public String getCpf() {
 		return cpf;
 	}
@@ -105,7 +97,6 @@ public class Cliente {
 		this.cpf = cpf;
 	}
 
-	
 	public String getTelefone() {
 		return telefone;
 	}
@@ -114,7 +105,6 @@ public class Cliente {
 		this.telefone = telefone;
 	}
 
-	
 	public List<Pedido> getPedidos() {
 		return pedidos;
 	}
