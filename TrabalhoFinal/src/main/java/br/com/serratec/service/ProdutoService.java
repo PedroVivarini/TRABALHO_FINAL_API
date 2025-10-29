@@ -6,6 +6,8 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.serratec.dto.ProdutoRequestDTO;
@@ -17,9 +19,9 @@ import br.com.serratec.repository.ProdutoRepository;
 
 @Service
 public class ProdutoService {
-
+	
 	@Autowired
-	private ProdutoRepository produtoRepository;
+	private ProdutoRepository repository;
 
 	@Autowired
 	private CategoriaRepository categoriaRepository;
@@ -34,7 +36,7 @@ public class ProdutoService {
 			produto.setValor(dto.getValor());
 			produto.setCategoria(categoria);
 
-			produto = produtoRepository.save(produto);
+			produto = repository.save(produto);
 
 			return new ProdutoResponseDTO(produto);
 
@@ -43,10 +45,10 @@ public class ProdutoService {
 
 		}
 	}
-
+	
 	public Set<ProdutoResponseDTO> listar() {
 		Set<ProdutoResponseDTO> produtoDTO = new HashSet<>();
-		for (Produto produto : produtoRepository.findAll()) {
+		for (Produto produto : repository.findAll()) {
 			if (produto.getCategoria() != null) {
 				produtoDTO.add(new ProdutoResponseDTO(produto.getId(), produto.getNome(), produto.getValor(),
 						produto.getCategoria().getNome()));
@@ -56,9 +58,14 @@ public class ProdutoService {
 		}
 		return produtoDTO;
 	}
+	
+	public Page<Produto> listarPorPagina(Pageable pageable) {
+		
+		return repository.findAll(pageable);
+	}
 
 	public ProdutoResponseDTO atualizar(UUID id, ProdutoRequestDTO dto) {
-		Optional<Produto> produtoOptional = produtoRepository.findById(id);
+		Optional<Produto> produtoOptional = repository.findById(id);
 
 		if (produtoOptional.isEmpty()) {
 			throw new RuntimeException("Produto não encontrado");
@@ -69,7 +76,7 @@ public class ProdutoService {
 		produto.setValor(dto.getValor());
 		produto.setId(id);
 
-		Produto produtoDTO = produtoRepository.save(produto);
+		Produto produtoDTO = repository.save(produto);
 		return new ProdutoResponseDTO(produtoDTO);
 	}
 }

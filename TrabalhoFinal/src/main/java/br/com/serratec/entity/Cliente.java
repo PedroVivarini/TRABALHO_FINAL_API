@@ -20,10 +20,15 @@ public class Cliente {
 	private UUID id;
 	
 	private String nome;
+	
 	private String email;
+	
 	private String cpf;
+	
 	private String telefone;
+	
 	private String endereco;
+	
 	private String cep;
 	
 	
