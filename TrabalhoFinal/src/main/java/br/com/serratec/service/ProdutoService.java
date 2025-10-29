@@ -1,11 +1,9 @@
 package br.com.serratec.service;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -14,69 +12,75 @@ import br.com.serratec.dto.ProdutoRequestDTO;
 import br.com.serratec.dto.ProdutoResponseDTO;
 import br.com.serratec.entity.Categoria;
 import br.com.serratec.entity.Produto;
+import br.com.serratec.exception.DataConflictException;
+import br.com.serratec.exception.ResourceNotFoundException;
 import br.com.serratec.repository.CategoriaRepository;
 import br.com.serratec.repository.ProdutoRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class ProdutoService {
 	
-	@Autowired
-	private ProdutoRepository repository;
+	private final ProdutoRepository repository;
+	private final CategoriaRepository categoriaRepository;
 
-	@Autowired
-	private CategoriaRepository categoriaRepository;
-
-	public ProdutoResponseDTO inserirProduto(ProdutoRequestDTO dto) {
-		Optional<Categoria> categoriaOptional = categoriaRepository.findById(dto.getIdCategoria());
-		if (categoriaOptional.isPresent()) {
-			Categoria categoria = categoriaOptional.get();
-
-			Produto produto = new Produto();
-			produto.setNome(dto.getNome());
-			produto.setValor(dto.getValor());
-			produto.setCategoria(categoria);
-
-			produto = repository.save(produto);
-
-			return new ProdutoResponseDTO(produto);
-
-		} else {
-			throw new RuntimeException("Categoria não encontrada!");
-
-		}
+	public ProdutoService(ProdutoRepository repository, CategoriaRepository categoriaRepository) {
+		this.repository = repository;
+		this.categoriaRepository = categoriaRepository;
 	}
-	
-	public Set<ProdutoResponseDTO> listar() {
-		Set<ProdutoResponseDTO> produtoDTO = new HashSet<>();
-		for (Produto produto : repository.findAll()) {
-			if (produto.getCategoria() != null) {
-				produtoDTO.add(new ProdutoResponseDTO(produto.getId(), produto.getNome(), produto.getValor(),
-						produto.getCategoria().getNome()));
-			} else {
-				throw new RuntimeException("Produto sem categoria: " + produto.getNome());
-			}
-		}
-		return produtoDTO;
-	}
-	
-	public Page<Produto> listarPorPagina(Pageable pageable) {
+
+	@Transactional 
+	public ProdutoResponseDTO inserirProduto(ProdutoRequestDTO dto) throws DataConflictException {
 		
-		return repository.findAll(pageable);
-	}
-
-	public ProdutoResponseDTO atualizar(UUID id, ProdutoRequestDTO dto) {
-		Optional<Produto> produtoOptional = repository.findById(id);
-
-		if (produtoOptional.isEmpty()) {
-			throw new RuntimeException("Produto não encontrado");
-		}
-
-		Produto produto = produtoOptional.get();
+		String nomeProduto = dto.getNome(); 
+        if (repository.existsByNome(nomeProduto)) {
+            throw new DataConflictException("Produto com esse nome ja cadastrado");
+    }
+		
+        Categoria categoria = categoriaRepository.findById(dto.getIdCategoria())
+            .orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada!"));
+		Produto produto = new Produto();
+        
 		produto.setNome(dto.getNome());
 		produto.setValor(dto.getValor());
-		produto.setId(id);
+		produto.setCategoria(categoria);
 
-		Produto produtoDTO = repository.save(produto);
-		return new ProdutoResponseDTO(produtoDTO);
+		produto = repository.save(produto);
+        
+        return new ProdutoResponseDTO(produto);
 	}
+	
+	@Transactional
+    public Page<ProdutoResponseDTO> listarPorPagina(Pageable pageable) {
+        Page<Produto> paginaDeProdutos = repository.findAll(pageable); 
+        Page<ProdutoResponseDTO> paginaDeDTOs = paginaDeProdutos
+            .map(ProdutoResponseDTO::new); 
+        return paginaDeDTOs;
+    }
+
+	@Transactional
+	public List<ProdutoResponseDTO> listar() {
+		List<Produto> produtos = repository.findAll(); 
+        return produtos.stream()
+                       .map(ProdutoResponseDTO::new)
+                       .collect(Collectors.toList());
+	}
+
+	@Transactional
+	public ProdutoResponseDTO atualizar(UUID id, ProdutoRequestDTO dto) {
+		Produto produto = repository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
+
+
+        Categoria categoria = categoriaRepository.findById(dto.getIdCategoria())
+            .orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada!"));
+
+		produto.setNome(dto.getNome());
+		produto.setValor(dto.getValor());
+        produto.setCategoria(categoria); 
+
+		Produto produtoAtualizado = repository.save(produto); 
+		return new ProdutoResponseDTO(produtoAtualizado);
+	}
+    
 }
