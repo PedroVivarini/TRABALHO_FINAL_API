@@ -1,7 +1,6 @@
 package br.com.serratec.dto;
 
 import jakarta.validation.constraints.NotBlank;
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 
@@ -21,7 +20,9 @@ public record ClienteRequestDTO(
 
     @NotBlank
     @Size(max = 14)
-    String telefone) 
-{
-	
+    String telefone,
+    
+    String cep,
+    String endereco
+) {
 }

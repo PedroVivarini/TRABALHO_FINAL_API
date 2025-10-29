@@ -48,17 +48,6 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 		return super.handleExceptionInternal(ex, erroResposta, headers, status, request);
 	}
 	
-	@ExceptionHandler(UsuarioException.class)
-	protected ResponseEntity<Object> handleUsuarioException(UsuarioException ex) {
-		
-		List<String> erros = new ArrayList<>();
-		erros.add(ex.getMessage());
-		ErroResposta erroResposta = new ErroResposta(HttpStatus.UNPROCESSABLE_ENTITY.value(), 
-				"Existem campos inválidos", LocalDateTime.now(),
-				erros);
-	
-		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(erroResposta);
-	}
 	@ExceptionHandler(HttpClientErrorException.class)
 	protected ResponseEntity<Object>handleHttpClientErrorException(HttpClientErrorException ex){
 		List<String> erros = new ArrayList<>();
