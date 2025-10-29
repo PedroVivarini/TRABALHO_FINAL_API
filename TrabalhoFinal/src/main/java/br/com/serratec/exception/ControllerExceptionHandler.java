@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -48,17 +49,19 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 		return super.handleExceptionInternal(ex, erroResposta, headers, status, request);
 	}
 	
-	@ExceptionHandler(UsuarioException.class)
-	protected ResponseEntity<Object> handleUsuarioException(UsuarioException ex) {
-		
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	protected ResponseEntity<Object> handleDataIntegrityViolation( DataIntegrityViolationException ex) {
 		List<String> erros = new ArrayList<>();
 		erros.add(ex.getMessage());
-		ErroResposta erroResposta = new ErroResposta(HttpStatus.UNPROCESSABLE_ENTITY.value(), 
-				"Existem campos inválidos", LocalDateTime.now(),
-				erros);
-	
-		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(erroResposta);
+		ErroResposta erroResposta = new ErroResposta(HttpStatus.BAD_REQUEST.value(),
+				"Violação de integridade no banco de dados:", LocalDateTime.now(), erros);
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erroResposta);
+		
+		
 	}
+	
+
 	@ExceptionHandler(HttpClientErrorException.class)
 	protected ResponseEntity<Object>handleHttpClientErrorException(HttpClientErrorException ex){
 		List<String> erros = new ArrayList<>();
@@ -69,4 +72,66 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erroResposta);
 		
 	}
+	
+	@ExceptionHandler(EnumException.class)
+	protected ResponseEntity<Object> handleEnumException(EnumException ex) {
+		List<String> erros = new ArrayList<>();
+		erros.add(ex.getMessage());
+		ErroResposta erroResposta = new ErroResposta(HttpStatus.BAD_REQUEST.value(), "Status não definido:",
+				LocalDateTime.now(), erros);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erroResposta);
+
+	}
+	
+	@ExceptionHandler(ClienteException.class)
+	protected ResponseEntity<Object> handleClienteException(ClienteException ex) {
+		List<String> erros = new ArrayList<>();
+		erros.add(ex.getMessage());
+		ErroResposta erroResposta = new ErroResposta(HttpStatus.BAD_REQUEST.value(), "Cliente não encontrado:",
+				LocalDateTime.now(), erros);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erroResposta);
+
+	}
+	
+	@ExceptionHandler(ProdutoException.class)
+	protected ResponseEntity<Object> handleProdutoException(ProdutoException ex) {
+		List<String> erros = new ArrayList<>();
+		erros.add(ex.getMessage());
+		ErroResposta erroResposta = new ErroResposta(HttpStatus.BAD_REQUEST.value(), "Produto não encontrado:",
+				LocalDateTime.now(), erros);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erroResposta);
+
+	}
+	
+	@ExceptionHandler(PedidoException.class)
+	protected ResponseEntity<Object> handlePedidoException(PedidoException ex) {
+		List<String> erros = new ArrayList<>();
+		erros.add(ex.getMessage());
+		ErroResposta erroResposta = new ErroResposta(HttpStatus.BAD_REQUEST.value(), "Pedido não encontrado:",
+				LocalDateTime.now(), erros);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erroResposta);
+
+	}
+	
+	@ExceptionHandler(RegraNegocioException.class)
+	protected ResponseEntity<Object> handleRegraNegocioException(RegraNegocioException ex) {
+		List<String> erros = new ArrayList<>();
+		erros.add(ex.getMessage());
+		ErroResposta erroResposta = new ErroResposta(HttpStatus.BAD_REQUEST.value(), "Pedido vazio ou desconto inválido:",
+				LocalDateTime.now(), erros);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erroResposta);
+
+	}
+	
+	@ExceptionHandler(CepNaoEncontradoExeption.class)
+	protected ResponseEntity<Object> handleCepNaoEncontradoExeption(CepNaoEncontradoExeption ex) {
+		List<String> erros = new ArrayList<>();
+		erros.add(ex.getMessage());
+		ErroResposta erroResposta = new ErroResposta(HttpStatus.BAD_REQUEST.value(), "Pedido não encontrado:",
+				LocalDateTime.now(), erros);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erroResposta);
+
+	}
+	
+	
 }

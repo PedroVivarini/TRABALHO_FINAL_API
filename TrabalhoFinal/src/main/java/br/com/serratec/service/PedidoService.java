@@ -15,6 +15,7 @@ import br.com.serratec.entity.Pedido;
 import br.com.serratec.entity.Produto;
 import br.com.serratec.entity.ProdutoPedido;
 import br.com.serratec.enums.StatusPedido;
+import br.com.serratec.exception.PedidoException;
 import br.com.serratec.repository.ClienteRepository;
 import br.com.serratec.repository.PedidoRepository;
 import br.com.serratec.repository.ProdutoRepository;
@@ -36,7 +37,7 @@ public class PedidoService {
     public PedidoResponseDTO inserir(PedidoRequestDTO dto) {
         
         Cliente cliente = clienteRepository.findById(dto.getClienteId())
-            .orElseThrow(() -> new RuntimeException("Cliente não encontrado!"));
+            .orElseThrow(() -> new PedidoException("Cliente não encontrado!"));
 
         Pedido pedido = new Pedido();
         pedido.setCliente(cliente);
@@ -47,7 +48,7 @@ public class PedidoService {
         
         for (PedidoRequestDTO.ProdutoPedidoRequestDTO itemDTO : dto.getItens()) { 
             Produto produto = produtoRepository.findById(itemDTO.getProdutoId())
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado: " + itemDTO.getProdutoId()));
+                .orElseThrow(() -> new PedidoException("Produto não encontrado: " + itemDTO.getProdutoId()));
             
             ProdutoPedido produtoPedido = new ProdutoPedido();
             produtoPedido.setPedido(pedido);
@@ -79,7 +80,7 @@ public class PedidoService {
     @Transactional
     public PedidoResponseDTO editar(UUID id, StatusPedido novoStatus) {
         Pedido pedido = pedidoRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Pedido não encontrado!"));
+            .orElseThrow(() -> new PedidoException("Pedido não encontrado!"));
         
         pedido.setStatus(novoStatus);
         

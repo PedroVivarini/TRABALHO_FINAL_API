@@ -34,6 +34,9 @@ public class Pedido {
 
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProdutoPedido> itens;
+    
+    @OneToMany(mappedBy = "pedido")
+    private List<NotaFiscal> notasFiscais;
 
     private LocalDate dataPedido;
 
