@@ -12,8 +12,7 @@ import br.com.serratec.dto.ProdutoRequestDTO;
 import br.com.serratec.dto.ProdutoResponseDTO;
 import br.com.serratec.entity.Categoria;
 import br.com.serratec.entity.Produto;
-import br.com.serratec.exception.DataConflictException;
-import br.com.serratec.exception.ResourceNotFoundException;
+import br.com.serratec.exception.ProdutoException;
 import br.com.serratec.repository.CategoriaRepository;
 import br.com.serratec.repository.ProdutoRepository;
 import jakarta.transaction.Transactional;
@@ -30,15 +29,15 @@ public class ProdutoService {
 	}
 
 	@Transactional 
-	public ProdutoResponseDTO inserirProduto(ProdutoRequestDTO dto) throws DataConflictException {
+	public ProdutoResponseDTO inserirProduto(ProdutoRequestDTO dto) throws ProdutoException {
 		
 		String nomeProduto = dto.getNome(); 
         if (repository.existsByNome(nomeProduto)) {
-            throw new DataConflictException("Produto com esse nome ja cadastrado");
+            throw new ProdutoException("Produto com esse nome ja cadastrado");
     }
 		
         Categoria categoria = categoriaRepository.findById(dto.getIdCategoria())
-            .orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada!"));
+            .orElseThrow(() -> new ProdutoException("Categoria não encontrada!"));
 		Produto produto = new Produto();
         
 		produto.setNome(dto.getNome());
@@ -69,11 +68,11 @@ public class ProdutoService {
 	@Transactional
 	public ProdutoResponseDTO atualizar(UUID id, ProdutoRequestDTO dto) {
 		Produto produto = repository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Produto não encontrado"));
+            .orElseThrow(() -> new ProdutoException("Produto não encontrado"));
 
 
         Categoria categoria = categoriaRepository.findById(dto.getIdCategoria())
-            .orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada!"));
+            .orElseThrow(() -> new ProdutoException("Categoria não encontrada!"));
 
 		produto.setNome(dto.getNome());
 		produto.setValor(dto.getValor());

@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.serratec.dto.ClienteRequestDTO;
 import br.com.serratec.dto.ClienteResponseDTO;
 import br.com.serratec.entity.Cliente;
-import br.com.serratec.exception.DataConflictException;
+import br.com.serratec.exception.ClienteException;
 import br.com.serratec.repository.ClienteRepository;
 
 @Service
@@ -37,10 +37,10 @@ public class ClienteService {
 	public ClienteResponseDTO inserir (ClienteRequestDTO dto) {
 		
 		if (repository.existsByCpf(dto.cpf())) {
-            throw new DataConflictException("CPF já cadastrado.");
+            throw new ClienteException("CPF já cadastrado.");
         }
         if (repository.existsByEmail(dto.email())) {
-            throw new DataConflictException("Email já cadastrado.");
+            throw new ClienteException("Email já cadastrado.");
         }
 		
 		Cliente cliente = new Cliente();
@@ -60,7 +60,7 @@ public class ClienteService {
 	@Transactional
 	public ClienteResponseDTO editar(UUID id, ClienteRequestDTO dto) {
 	    Cliente cliente = repository.findById(id)
-	        .orElseThrow(() -> new RuntimeException("Cliente não encontrado com esse id"));
+	        .orElseThrow(() -> new ClienteException("Cliente não encontrado com esse id"));
 
 	    cliente.setNome(dto.nome());
 		cliente.setEmail(dto.email());

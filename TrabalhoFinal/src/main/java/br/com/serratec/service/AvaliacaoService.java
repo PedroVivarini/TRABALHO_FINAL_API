@@ -11,6 +11,7 @@ import br.com.serratec.dto.AvaliacaoResponseDTO;
 import br.com.serratec.entity.Avaliacao;
 import br.com.serratec.entity.Cliente;
 import br.com.serratec.entity.Produto;
+import br.com.serratec.exception.RegraNegocioException;
 import br.com.serratec.repository.AvaliacaoRepository;
 import br.com.serratec.repository.ClienteRepository;
 import br.com.serratec.repository.ProdutoRepository;
@@ -31,7 +32,7 @@ public class AvaliacaoService {
     @Transactional(readOnly = true)
     public List<AvaliacaoResponseDTO> listarPorProduto(UUID produtoId) {
         if (!produtoRepository.existsById(produtoId)) {
-            throw new RuntimeException("Produto não encontrado");
+            throw new RegraNegocioException("Produto não encontrado");
         }
         
         List<Avaliacao> avaliacoes = avaliacaoRepository.findByProdutoId(produtoId);
@@ -46,10 +47,10 @@ public class AvaliacaoService {
     @Transactional
     public AvaliacaoResponseDTO inserir(AvaliacaoRequestDTO dto) {
         Cliente cliente = clienteRepository.findById(dto.getClienteId())
-            .orElseThrow(() -> new RuntimeException("Cliente não encontrado."));
+            .orElseThrow(() -> new RegraNegocioException("Cliente não encontrado."));
         
         Produto produto = produtoRepository.findById(dto.getProdutoId())
-            .orElseThrow(() -> new RuntimeException("Produto não encontrado."));
+            .orElseThrow(() -> new RegraNegocioException("Produto não encontrado."));
 
         Avaliacao avaliacao = new Avaliacao();
         avaliacao.setCliente(cliente);
@@ -65,7 +66,7 @@ public class AvaliacaoService {
     @Transactional
     public AvaliacaoResponseDTO editar(UUID id, AvaliacaoRequestDTO dto) {
         Avaliacao avaliacao = avaliacaoRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Avaliação não encontrada."));
+            .orElseThrow(() -> new RegraNegocioException("Avaliação não encontrada."));
 
         avaliacao.setNota(dto.getNota());
         avaliacao.setComentario(dto.getComentario());
@@ -77,7 +78,7 @@ public class AvaliacaoService {
     @Transactional
     public void deletar(UUID id) {
         if (!avaliacaoRepository.existsById(id)) {
-            throw new RuntimeException("Avaliação não encontrada.");
+            throw new RegraNegocioException("Avaliação não encontrada.");
         }
         avaliacaoRepository.deleteById(id);
     }
