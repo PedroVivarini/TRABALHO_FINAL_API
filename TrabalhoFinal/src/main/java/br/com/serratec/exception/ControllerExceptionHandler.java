@@ -134,4 +134,15 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 	
 	
+	@ExceptionHandler(DataConflictException.class)
+    public ResponseEntity<ErroResposta> handleDataConflictException(DataConflictException ex) {
+        
+        List<String> erros = new ArrayList<>();
+        erros.add(ex.getMessage());
+        ErroResposta erroResposta = new ErroResposta(HttpStatus.CONFLICT.value(), 
+                "Conflito de Dados",LocalDateTime.now(),erros);                      
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(erroResposta);
+    
+    }
 }

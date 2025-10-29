@@ -1,9 +1,13 @@
 package br.com.serratec.controller;
 
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction; 
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,24 +27,31 @@ import jakarta.validation.Valid;
 @RequestMapping("/produtos")
 public class ProdutoController {
 	
-	@Autowired
+	@Autowired 
 	private ProdutoService service;
 	
 	
+	@GetMapping
+	public ResponseEntity<List<ProdutoResponseDTO>> listar (){
+		return ResponseEntity.ok(service.listar());	
+	}
+	
+	@GetMapping("/paginacao")
+	public ResponseEntity<Page<ProdutoResponseDTO>> listarPorPagina(@PageableDefault(page = 0, size = 3, sort = "valor",  
+	direction = Direction.ASC)
+	Pageable pageable) {
+	    Page<ProdutoResponseDTO> pagina = service.listarPorPagina(pageable);
+	    return ResponseEntity.ok(pagina);
+	}
+		
 	@PostMapping
-	public ResponseEntity<ProdutoResponseDTO> inserir (@Valid @RequestBody ProdutoRequestDTO produtoResquestDTO ) {
-		ProdutoResponseDTO response = service.inserirProduto(produtoResquestDTO );
+	public ResponseEntity<ProdutoResponseDTO> inserir (@Valid @RequestBody ProdutoRequestDTO produtoRequestDTO ) {
+		ProdutoResponseDTO response = service.inserirProduto(produtoRequestDTO);
 		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 	
-	@GetMapping
-	public ResponseEntity<Set<ProdutoResponseDTO>> listar (){
-		return ResponseEntity.ok(service.listar()); 
-	}
-	
 	@PutMapping("/{id}")
-	public ResponseEntity<ProdutoResponseDTO> atualizar(@PathVariable UUID id, @RequestBody ProdutoRequestDTO dto) {
-
+	public ResponseEntity<ProdutoResponseDTO> atualizar(@PathVariable UUID id, @Valid @RequestBody ProdutoRequestDTO dto ) {
 	    ProdutoResponseDTO response = service.atualizar(id, dto);
 	    return ResponseEntity.ok(response);
 	}
