@@ -8,4 +8,6 @@ import br.com.serratec.entity.Categoria;
 
 public interface CategoriaRepository extends JpaRepository<Categoria, UUID>{
 
+	boolean existsByNome(String nome);
+
 }
