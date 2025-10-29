@@ -1,9 +1,10 @@
 package br.com.serratec.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 import br.com.serratec.entity.Pedido;
 import br.com.serratec.entity.ProdutoPedido;
 import br.com.serratec.enums.StatusPedido;
@@ -12,7 +13,7 @@ public class PedidoResponseDTO {
 
 	private UUID id;
 	private StatusPedido status;
-	private LocalDateTime dataPedido;
+	private LocalDate dataPedido;
 	private String nomeCliente;
 	private List<ProdutoPedidoResponseDTO> itens;
 	private Double valorTotal;
@@ -94,11 +95,11 @@ public class PedidoResponseDTO {
 		this.status = status;
 	}
 
-	public LocalDateTime getDataPedido() {
+	public LocalDate getDataPedido() {
 		return dataPedido;
 	}
 
-	public void setDataPedido(LocalDateTime dataPedido) {
+	public void setDataPedido(LocalDate dataPedido) {
 		this.dataPedido = dataPedido;
 	}
 

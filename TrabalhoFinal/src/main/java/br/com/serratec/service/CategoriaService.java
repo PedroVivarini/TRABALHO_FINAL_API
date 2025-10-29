@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import br.com.serratec.dto.CategoriaRequestDTO;
 import br.com.serratec.dto.CategoriaResponseDTO;
 import br.com.serratec.entity.Categoria;
+import br.com.serratec.exception.DataConflictException;
 import br.com.serratec.repository.CategoriaRepository;
 
 @Service
@@ -21,6 +22,11 @@ public class CategoriaService {
 	private CategoriaRepository repository;
 
 	public CategoriaResponseDTO inserirCategoria(CategoriaRequestDTO dto) {
+		
+		String nomeCategoria = dto.getNome();
+        if (repository.existsByNome(nomeCategoria)) {
+            throw new DataConflictException("Categoria com esse nome já cadastrada.");
+        }
 		Categoria categoria = new Categoria();
 		categoria.setNome(dto.getNome());
 
