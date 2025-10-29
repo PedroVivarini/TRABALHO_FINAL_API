@@ -6,7 +6,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction; 
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,57 +30,53 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
-@Tag(name="Produto",description="Cadastro de Produtos")
+@Tag(name = "Produto", description = "Cadastro de Produtos")
 @RestController
 @RequestMapping("/produtos")
 public class ProdutoController {
-	
-	@Autowired 
-	private ProdutoService service;
-	
-		@Operation(summary = "Inserir produto", description = "Cadastra um novo produto no banco de dados")
-		@ApiResponses(value = {@ApiResponse(responseCode = "200", content = {
-			@Content(schema = @Schema(implementation = Produto.class),mediaType = "application/json") }, description = "Insere um produto no registro"),
-			@ApiResponse(responseCode = "401",description = "Erro de Autenticação"),
-			@ApiResponse(responseCode = "403",description = "Não há permissão para acessar o recurso"),
-			@ApiResponse(responseCode = "404",description = "Recurso não encontrado"),
-			@ApiResponse(responseCode = "505",description = "Exceção interna da aplicação"),
-		})
-	
-	@GetMapping
-	public ResponseEntity<List<ProdutoResponseDTO>> listar (){
-		return ResponseEntity.ok(service.listar());	
-	}
-	
-	@Operation(summary = "Listagem de produtos", description = "Lista todos os produtos cadastrados em um arquivo JSON")
-		@ApiResponses(value = {@ApiResponse(responseCode = "200", content = {
-			@Content(schema = @Schema(implementation = Produto.class),mediaType = "application/json") }, description = "Retorna todos os produtos"),
-			@ApiResponse(responseCode = "401",description = "Erro de Autenticação"),
-			@ApiResponse(responseCode = "403",description = "Não há permissão para acessar o recurso"),
-			@ApiResponse(responseCode = "404",description = "Recurso não encontrado"),
-			@ApiResponse(responseCode = "505",description = "Exceção interna da aplicação"),
-		})
-	
-	@GetMapping
-	public ResponseEntity<Set<ProdutoResponseDTO>> listar (){
-		return ResponseEntity.ok(service.listar()); 
-	@GetMapping("/paginacao")
-	public ResponseEntity<Page<ProdutoResponseDTO>> listarPorPagina(@PageableDefault(page = 0, size = 3, sort = "valor",  
-	direction = Direction.ASC)
-	Pageable pageable) {
-	    Page<ProdutoResponseDTO> pagina = service.listarPorPagina(pageable);
-	    return ResponseEntity.ok(pagina);
-	}
-		
-	@PostMapping
-	public ResponseEntity<ProdutoResponseDTO> inserir (@Valid @RequestBody ProdutoRequestDTO produtoRequestDTO ) {
-		ProdutoResponseDTO response = service.inserirProduto(produtoRequestDTO);
-		return ResponseEntity.status(HttpStatus.CREATED).body(response);
-	}
-	
-	@PutMapping("/{id}")
-	public ResponseEntity<ProdutoResponseDTO> atualizar(@PathVariable UUID id, @Valid @RequestBody ProdutoRequestDTO dto ) {
-	    ProdutoResponseDTO response = service.atualizar(id, dto);
-	    return ResponseEntity.ok(response);
-	}
+
+    @Autowired
+    private ProdutoService service;
+
+    @Operation(summary = "Inserir produto", description = "Cadastra um novo produto no banco de dados")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", content = {
+            @Content(schema = @Schema(implementation = Produto.class), mediaType = "application/json")
+        }, description = "Produto criado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "500", description = "Erro interno")
+    })
+    @PostMapping
+    public ResponseEntity<ProdutoResponseDTO> inserir(@Valid @RequestBody ProdutoRequestDTO produtoRequestDTO) {
+        ProdutoResponseDTO response = service.inserirProduto(produtoRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @Operation(summary = "Listar produtos", description = "Lista todos os produtos cadastrados")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", content = {
+            @Content(schema = @Schema(implementation = Produto.class), mediaType = "application/json")
+        }, description = "Lista de produtos"),
+        @ApiResponse(responseCode = "500", description = "Erro interno")
+    })
+    @GetMapping
+    public ResponseEntity<List<ProdutoResponseDTO>> listar() {
+        return ResponseEntity.ok(service.listar());
+    }
+
+    @Operation(summary = "Listar produtos com paginação", description = "Lista produtos paginados por valor")
+    @GetMapping("/paginacao")
+    public ResponseEntity<Page<ProdutoResponseDTO>> listarPorPagina(
+            @PageableDefault(page = 0, size = 3, sort = "valor", direction = Direction.ASC) Pageable pageable) {
+        Page<ProdutoResponseDTO> pagina = service.listarPorPagina(pageable);
+        return ResponseEntity.ok(pagina);
+    }
+
+    @Operation(summary = "Atualizar produto", description = "Atualiza um produto existente")
+    @PutMapping("/{id}")
+    public ResponseEntity<ProdutoResponseDTO> atualizar(@PathVariable UUID id,
+            @Valid @RequestBody ProdutoRequestDTO dto) {
+        ProdutoResponseDTO response = service.atualizar(id, dto);
+        return ResponseEntity.ok(response);
+    }
 }
