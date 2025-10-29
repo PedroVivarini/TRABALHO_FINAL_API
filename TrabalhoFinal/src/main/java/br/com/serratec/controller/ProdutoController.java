@@ -4,6 +4,10 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.serratec.dto.ProdutoRequestDTO;
 import br.com.serratec.dto.ProdutoResponseDTO;
+import br.com.serratec.entity.Produto;
 import br.com.serratec.service.ProdutoService;
 import jakarta.validation.Valid;
 
@@ -36,6 +41,13 @@ public class ProdutoController {
 	@GetMapping
 	public ResponseEntity<Set<ProdutoResponseDTO>> listar (){
 		return ResponseEntity.ok(service.listar()); 
+	}
+	
+	@GetMapping("/paginacao")
+	public Page<Produto> listarPorPagina(@PageableDefault(
+			page = 0, size = 3, sort = "valor", 
+			direction = Direction.ASC)Pageable pageable) {
+		return service.listarPorPagina(pageable);
 	}
 	
 	@PutMapping("/{id}")
