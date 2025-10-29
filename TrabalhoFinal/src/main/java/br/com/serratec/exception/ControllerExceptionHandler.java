@@ -145,4 +145,16 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(erroResposta);
     
     }
+	
+	@ExceptionHandler(UsuarioException.class)
+	protected ResponseEntity<Object> handleUsuarioException(UsuarioException ex) {
+		
+		List<String> erros = new ArrayList<>();
+		erros.add(ex.getMessage());
+		ErroResposta erroResposta = new ErroResposta(HttpStatus.UNPROCESSABLE_ENTITY.value(), 
+				"Existem campos inválidos", LocalDateTime.now(),
+				erros);
+	
+		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(erroResposta);
+	}
 }
