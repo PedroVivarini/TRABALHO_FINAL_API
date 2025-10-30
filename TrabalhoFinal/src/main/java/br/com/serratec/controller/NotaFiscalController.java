@@ -39,14 +39,14 @@ public class NotaFiscalController {
 	}
 	
 	@PutMapping
-	public ResponseEntity<NotaFiscalResponseDTO> atualizar (@PathVariable UUID id, @RequestBody NotaFiscalRequestDTO dto){
+	public ResponseEntity<NotaFiscalResponseDTO> atualizar (@Valid @PathVariable UUID id, @RequestBody NotaFiscalRequestDTO dto){
 		NotaFiscalResponseDTO reponse = fiscalService.atualizar(id, dto);
 		return ResponseEntity.ok(reponse);
 		
 	}
 	
 	@DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable UUID id) {
+    public ResponseEntity<Void> deletar( @Valid @PathVariable UUID id) {
         fiscalService.deletar(id);
         return ResponseEntity.noContent().build();
     }
