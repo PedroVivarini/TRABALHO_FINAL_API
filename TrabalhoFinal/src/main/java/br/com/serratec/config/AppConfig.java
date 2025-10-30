@@ -39,6 +39,8 @@ public class AppConfig {
 				.authorizeHttpRequests(requests -> requests.requestMatchers(HttpMethod.GET, "/funcionarios").permitAll()
 						.requestMatchers(HttpMethod.POST, "/perfis").permitAll().requestMatchers("/h2-console/**")
 						.permitAll()
+						.requestMatchers("/swagger-ui/**").permitAll()
+
 
 						.requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
 
