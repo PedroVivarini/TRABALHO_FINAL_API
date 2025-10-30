@@ -2,6 +2,7 @@
 Este projeto foi desenvolvido como parte da residência em TIC Software pelo Serratec, com foco na construção de uma API REST utilizando Java e Spring Boot. O objetivo foi aplicar conceitos de desenvolvimento Back-End, boas práticas de arquitetura e integração entre camadas.
 
 #Participantes
+
 Pedro Vivarini
 
 Marcos Muniz
