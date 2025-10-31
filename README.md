@@ -1,7 +1,7 @@
 # Trabalho Final – API REST com Spring Boot
 Este projeto foi desenvolvido como parte da residência em TIC Software pelo Serratec, com foco na construção de uma API REST utilizando Java e Spring Boot. O objetivo foi aplicar conceitos de desenvolvimento Back-End, boas práticas de arquitetura e integração entre camadas.
 
-#Participantes
+# Participantes
 
 Pedro Vivarini
 
@@ -11,11 +11,12 @@ Pedro Oliveira
 
 Bernardo Winter
 
-#Objetivo
+# Objetivo
 Desenvolver uma API funcional e estruturada, simulando um sistema de pedidos com autenticação, cadastro de clientes, produtos, categorias, avaliações e emissão de nota fiscal. O projeto também incluiu documentação técnica e integração com serviços externos.
 
-#Contribuições Individuais
-#Pedro Vivarini
+# Contribuições Individuais
+
+# Pedro Vivarini
 
 Relacionamento entre categoria e produto
 
@@ -27,7 +28,7 @@ Funcionalidade individual de nota fiscal dos produtos
 
 Implementação da autenticação em conjunto com Marcos
 
-#Marcos Muniz
+# Marcos Muniz
 
 Relacionamento entre cliente e pedido 
 
@@ -39,7 +40,7 @@ Desenvolvimento da autenticação
 
 Criação do sistema de avaliação de produtos
 
-#Pedro Oliveira
+# Pedro Oliveira
 
 Implementação da funcionalidade de cadastro de cliente
 
@@ -49,11 +50,11 @@ Integração com API ViaCEP para busca de endereço
 
 Desenvolvimento de envio de e-mails para clientes
 
-#Bernardo Winter
+# Bernardo Winter
 
 Criação da documentação da API utilizando Swagger
 
-🛠️ Tecnologias Utilizadas
+# Tecnologias Utilizadas
 Java
 
 Spring Boot
